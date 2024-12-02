@@ -5,6 +5,7 @@ const btnEvent = document.getElementById("form");
 const cityInput = document.getElementById("city");
 const weatherResult = document.getElementById("weather-result");
 const errorPrint = document.getElementById("error");
+const output = document.getElementById("output");
 
 btnEvent.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -53,3 +54,23 @@ const kelvinToCelsius = (temp) => {
 const displayError = (error) => {
   errorPrint.innerHTML = `${error}`;
 };
+
+function debounce(func, delay) {
+  let timer;
+
+  return function (...args) {
+    clearInterval(timer);
+
+    timer = setInterval(() => {
+      func.apply(this, args);
+    }, delay);
+  };
+}
+
+function handleFilter(event) {
+  output.textContent = `Escribiendo: ${event.target.value}`;
+}
+
+const debounceHandler = debounce(handleFilter, 300);
+
+btnEvent.addEventListener("input", debounceHandler);
